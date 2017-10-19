@@ -1,4 +1,8 @@
 import arcade.key
+from random import randint
+
+
+
 BLOCK_SIZE = 70
 GRAVITY_CONSTANT = 9.81
 FLIPDOWN = 0
@@ -189,17 +193,17 @@ class World:
             self.ball.delta_x *= -1
 
         if self.ball.hit(self.leftBumper, 32):
-            self.ball.delta_x = (self.ball.delta_x * -1)*1.1
+            self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(-2,2)
             self.ball.delta_y = (self.ball.delta_y * -2)
             self.score += 100
 
         if self.ball.hit(self.midBumper, 32):
-            self.ball.delta_x = (self.ball.delta_x * -1)*1.1
+            self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(-2,2)
             self.ball.delta_y = (self.ball.delta_y * -2)
             self.score += 200
 
         if self.ball.hit(self.rightBumper, 32):
-            self.ball.delta_x = (self.ball.delta_x * -1)*1.1
+            self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(-2,2)
             self.ball.delta_y = (self.ball.delta_y * -2)
             self.score += 100
 
