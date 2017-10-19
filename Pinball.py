@@ -1,5 +1,5 @@
 import arcade
-from Model import World
+from model import World
 
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 700
