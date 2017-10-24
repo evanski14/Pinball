@@ -1,4 +1,5 @@
 import arcade.key
+import arcade.sound
 from random import randint
 
 
@@ -95,7 +96,7 @@ class Ball:
 
 
     def update(self, delta):
-
+        deadSound = arcade.sound.load_sound('sounds/dead.mp3')
 
 
         #Initiate gravity
@@ -125,8 +126,10 @@ class Ball:
         elif self.y > 700 - 32:
             self.delta_y *= randint(-2,-1)
         elif self.y < 32:
+            arcade.sound.play_sound(deadSound)
             self.x = 750
             self.y = 750
+
 
         #Check slope hit
         if(self.x < 240) or (self.x > 462):
@@ -210,44 +213,52 @@ class World:
         self.midBumper = MidBumper(self, 350, 550, 0)
         self.ball = Ball(self, 350, 400, 0)
 
+        #backgroundSound = arcade.sound.load_sound('sounds/test.mp3')
+        #arcade.sound.play_sound(backgroundSound)
+
 
 
     def update(self, delta):
+        hitSound = arcade.sound.load_sound('sounds/hit.mp3')
+        flipSound = arcade.sound.load_sound('sounds/flipper.mp3')
         self.ball.update(delta)
 
-        #Can't do slope yet!##################################
-        #if self.slope.bounce(self.ball, 32):
-            #self.ball.delta_y *= -1
-            #self.ball.delta_x *= -1
 
         if self.ball.hit(self.leftBumper, 32):
             self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(1,3)
             self.ball.delta_y = (self.ball.delta_y * -2)
             self.score += 100
+            arcade.sound.play_sound(hitSound)
 
         if self.ball.hit(self.midBumper, 32):
             self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(1,3)
             self.ball.delta_y = (self.ball.delta_y * -2)
             self.score += 200
+            arcade.sound.play_sound(hitSound)
 
         if self.ball.hit(self.rightBumper, 32):
             self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(1,3)
             self.ball.delta_y = (self.ball.delta_y * -2)
             self.score += 100
+            arcade.sound.play_sound(hitSound)
 
         if self.ball.hit(self.leftFlipper, 33.75): #67.5 is the biggest hit box
             self.ball.delta_y = self.leftFlipper.status * self.ball.delta_y
+            arcade.sound.play_sound(flipSound)
 
         if self.ball.hit(self.rightFlipper, 33.75):
             self.ball.delta_y = self.rightFlipper.status * self.ball.delta_y
+            arcade.sound.play_sound(flipSound)
 
 
     def on_key_press(self,key,key_modifiers):
+        resetSound = arcade.sound.load_sound('sounds/rewind.mp3')
         if key == arcade.key.SPACE:
              self.leftFlipper.switch_direction()
              self.rightFlipper.switch_direction()
 
         if key == arcade.key.R:
+            arcade.sound.play_sound(resetSound)
             self.ball.x = 350
             self.ball.y = 400
             self.ball.delta_x = 1.5
