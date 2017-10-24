@@ -86,7 +86,7 @@ class PinBall(arcade.Window):
 
         self.Ball.draw()
 
-        arcade.draw_text(str(self.world.score),  600, 30, arcade.color.WHITE, 20)
+        arcade.draw_text(str(self.world.score),  500, 30, arcade.color.WHITE, 20)
 
     def on_key_press(self,key,key_modifiers):
         self.world.on_key_press(key, key_modifiers)

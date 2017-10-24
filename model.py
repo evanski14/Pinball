@@ -90,24 +90,48 @@ class Ball:
         self.x = x
         self.y = y
         self.angle = 0
-        self.delta_x = 0.5 #actual 0.5
+        self.delta_x = 2 #actual 0.8
         self.delta_y = -0.85 #actual -0.85
 
 
     def update(self, delta):
 
-        #Check Wall hit
-        if self.x > 700 - 32:
-            self.delta_x *= -1
-        elif self.x < 32:
-            self.delta_x *= -1
-        elif self.y > 700 - 32:
-            self.delta_y *= -1
-        elif self.y < 32:
-            self.delta_y *= -1
 
+
+        #Initiate gravity
         self.x += self.delta_x
         self.y += self.delta_y *GRAVITY_CONSTANT
+
+        if 0.8 >self.delta_y > -0.8:
+            self.delta_y = -0.85
+
+        if self.delta_y > 2:
+            self.delta_y *= 0.25
+        elif self.delta_x < -2:
+            self.delta_y *= 0.25
+
+        if self.delta_x > 3:
+            self.delta_x = 2
+        elif self.delta_x < -3:
+            self.delta_X = -2
+        elif self.delta_x == 0:
+            self.delta_x = 2
+
+        #Check Wall hit
+        if self.x > 700 - 32:
+            self.delta_x *= randint(-2,-1)
+        elif self.x < 32:
+            self.delta_x *= randint(-2,-1)
+        elif self.y > 700 - 32:
+            self.delta_y *= randint(-2,-1)
+        elif self.y < 32:
+            self.delta_y *= randint(-2,-1)
+
+        #Check slope hit
+    
+
+
+
 
 
     def hit(self, other, hit_size):
@@ -166,6 +190,7 @@ class Slope:
 
 
 
+
 class World:
     def __init__(self, width, height):
         self.width = width
@@ -188,30 +213,30 @@ class World:
         self.ball.update(delta)
 
         #Can't do slope yet!##################################
-        if self.ball.hit(self.slope, 32):
-            self.ball.delta_y *= -1
-            self.ball.delta_x *= -1
+        #if self.slope.bounce(self.ball, 32):
+            #self.ball.delta_y *= -1
+            #self.ball.delta_x *= -1
 
         if self.ball.hit(self.leftBumper, 32):
-            self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(-2,2)
+            self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(1,3)
             self.ball.delta_y = (self.ball.delta_y * -2)
             self.score += 100
 
         if self.ball.hit(self.midBumper, 32):
-            self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(-2,2)
+            self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(1,3)
             self.ball.delta_y = (self.ball.delta_y * -2)
             self.score += 200
 
         if self.ball.hit(self.rightBumper, 32):
-            self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(-2,2)
+            self.ball.delta_x = (self.ball.delta_x * randint(-1,1))*randint(1,3)
             self.ball.delta_y = (self.ball.delta_y * -2)
             self.score += 100
 
-        if self.ball.hit(self.leftFlipper, 67.5):
+        if self.ball.hit(self.leftFlipper, 33.75): #67.5 is the biggest hit box
             self.ball.delta_y = self.leftFlipper.status * self.ball.delta_y
 
-        if self.ball.hit(self.rightFlipper, 67.5):
-            self.ball.delta_y = self.rightFlipper.status * self.ball.delta_x
+        if self.ball.hit(self.rightFlipper, 33.75):
+            self.ball.delta_y = self.rightFlipper.status * self.ball.delta_y
 
 
     def on_key_press(self,key,key_modifiers):
