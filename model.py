@@ -90,7 +90,7 @@ class Ball:
         self.x = x
         self.y = y
         self.angle = 0
-        self.delta_x = 2 #actual 0.8
+        self.delta_x = 1.5 #actual 2
         self.delta_y = -0.85 #actual -0.85
 
 
@@ -125,11 +125,14 @@ class Ball:
         elif self.y > 700 - 32:
             self.delta_y *= randint(-2,-1)
         elif self.y < 32:
-            self.delta_y *= randint(-2,-1)
+            self.x = 750
+            self.y = 750
 
         #Check slope hit
-    
-
+        if(self.x < 240) or (self.x > 462):
+            if self.y < 160+16:
+                self.delta_y *= -1
+                self.delta_x *= randint(-1,1)
 
 
 
@@ -178,12 +181,12 @@ class Slope:
 
     def createmap(self):
             x = 446
-            for y in range(150, 350, 32):
+            for y in range(150, 160, 1):  #Actual 150, 350, 32
                 x += 30
                 self.list.insert(len(self.list),(x,y))
 
             x = 256
-            for y in range(150, 350, 32):
+            for y in range(150, 160, 1):
                 x -= 30
                 self.list.insert(len(self.list),(x,y))
 
@@ -205,7 +208,7 @@ class World:
         self.leftBumper = LeftBumper(self, 175, 450, 0)
         self.rightBumper = RightBumper(self, 525, 450, 0)
         self.midBumper = MidBumper(self, 350, 550, 0)
-        self.ball = Ball(self, 350, 350, 0)
+        self.ball = Ball(self, 350, 400, 0)
 
 
 
@@ -246,7 +249,7 @@ class World:
 
         if key == arcade.key.R:
             self.ball.x = 350
-            self.ball.x = 350
-            self.ball.delta_x = 0.5
+            self.ball.y = 400
+            self.ball.delta_x = 1.5
             self.ball.delta_y = -0.85
             self.score = 0
